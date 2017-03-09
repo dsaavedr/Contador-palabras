@@ -1,34 +1,68 @@
-$(document).ready(function () {
-  p = theEndIsNear();
+var arr, input, txt;
+var charCode=[];
 
-  var div = $("#time h1");
+var data = [];
+var labels = [];
 
-  div.html(p + "%");
-  window.setInterval(function () {
-    p = theEndIsNear();
+$(document).ready(function() {
 
-    div.html(p + "%");
-  },2000)
+  setData();
+  extract();
+  draw();
+
+  $('#txt-box').keyup(function(){
+    setData();
+    extract();
+    draw();
+  });
+
 });
 
-theEndIsNear = function () {
-  var day_ms = 1000*60*60*24;
-  var day_s = day_ms*1000;
+function setData () {
+  input = $('#txt-box')[0];
+  txt = input.value;
+  // eliminate spaces and transform to upper case
+  arr = txt.toUpperCase().split(" ").join("").split("");
+  // console.log(arr);
+  arr.sort();
+  data = [];
+  labels=[];
+}
 
-  var start = new Date(1997,3,14);
-  var now = new Date();
-  var finish = start;
+function extract() {
 
-  // Días en una vida de 70 años
+  for (i=0; i<arr.length; i++) {
+    if (labels.indexOf(arr[i])===-1) {
+      labels.push(arr[i]);
+      data.push(1);
+    } else {
+      data[labels.indexOf(arr[i])]++;
+    }
+  }
 
-  var tot_d = 70*365.25;
-  var tot_ms = tot_d*24*60*60*1000;
-  var tot_s = tot_ms*1000;
+}
 
-  var vida = now.getTime() - start.getTime();
-  var vida_s = vida * 1000;
-
-  var p = (vida_s/tot_s)*100;
-
-  return parseFloat(p.toFixed(10));
+function draw() {
+  var myChart = new Chart($("#g1"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Frequency",
+        data: data,
+        backgroundColor:'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+  });
 }
