@@ -50,6 +50,7 @@ function draw() {
     data: {
       labels: labels,
       datasets: [{
+        type: 'bar',
         label: "Frequency",
         data: data,
         backgroundColor:'rgba(255, 206, 86, 0.3)',
@@ -60,7 +61,8 @@ function draw() {
     options: {
         title: {
           display: true,
-          text: "Letter frequency"
+          text: "Letter frequency",
+          fontSize: 40
         },
         scales: {
             yAxes: [{
