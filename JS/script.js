@@ -11,6 +11,7 @@ $(document).ready(function() {
   draw();
 
   $('#txt-box').keyup(function(){
+    // resetCanvas();
     setData();
     extract();
     draw();
@@ -39,10 +40,11 @@ function extract() {
       data[labels.indexOf(arr[i])]++;
     }
   }
-
 }
 
 function draw() {
+  $('#g1').remove(); // this is my <canvas> element
+  $('#graph-container').append('<canvas  width="300" height="300" id="g1"><canvas>');
   var myChart = new Chart($("#g1"), {
     type: "bar",
     data: {
@@ -50,19 +52,30 @@ function draw() {
       datasets: [{
         label: "Frequency",
         data: data,
-        backgroundColor:'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor:'rgba(255, 206, 86, 0.3)',
+        borderColor: 'rgba(255, 206, 86, 1)',
         borderWidth: 1
       }]
     },
     options: {
+        title: {
+          display: true,
+          text: "Letter frequency"
+        },
         scales: {
             yAxes: [{
                 ticks: {
                     beginAtZero:true
                 }
             }]
+        },
+        legend: {
+          display: false
         }
     }
   });
+}
+
+function resetCanvas() {
+
 }
